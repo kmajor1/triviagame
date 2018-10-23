@@ -5,3 +5,7 @@
 .answerIncorrect {
     opacity: 0.20; 
 }
+
+.timer {
+    font-size: 20pt; 
+}
