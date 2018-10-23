@@ -16,7 +16,15 @@ window.onload = function ()
     ]
 
     // global  variable - will store the current question the user is at 
-    var currentQ = 1; 
+    var currentQ = 0; 
+    var wins = 0; 
+    var losses = 0; 
+    var answersCorrect = 0; 
+    var answersIncorrect =0; 
+
+    // load the timer div into global var 
+    var timerDiv = $(".timer"); 
+
 
 
 
@@ -46,6 +54,13 @@ window.onload = function ()
     
 
     var loadQuestion = function () {
+        // ensure that answers have correct classes for a fresh question 
+        $(".answerCorrect").addClass("answer");
+        $(".answerIncorrect").addClass("answer");
+        $(".answerCorrect").removeClass("answerCorrect");
+        $(".answerIncorrect").removeClass("answerIncorrect");
+        // clear the text 
+        $(".answer p").text("");
         // randomly select a place to put the correct answer
         var correctAnswerPos =  Math.floor(Math.random()*3);
         var correctAnswerDiv = $("#"+correctAnswerPos);
@@ -64,17 +79,40 @@ window.onload = function ()
         });
         // question now loaded, intiate a timer 
         var qTime = 5; 
+        timerDiv.text(qTime);
         var qTimer = setInterval(() => {
             // if timer has not run out, run again 
             
             if (qTime >0) {
                 console.log(qTime);
                 qTime--;
+                timerDiv.text(qTime);
                 // update a div showing the time remaining 
+                
             }
             // if it has, stop the timer by calling stopping func 
             else {
                 qTimerStop(); 
+                // highlight the right answer and give a message 
+                correctAnswerDiv.removeClass("answer");
+                correctAnswerDiv.addClass("answerCorrect"); 
+                $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
+                $(".answerIncorrect").removeClass("answer");
+                $(".userDash").text("You Lose, Jerk.");
+                // wait 2 seconds then load the next question and clear the formats 
+                setTimeout(() => {
+                    currentQ++;
+                    console.log("currentQ:"+" "+currentQ);
+                    if (currentQ < qAndA.length) {
+                    loadQuestion();
+                    }
+                    else {
+                        alert("game over!");
+                        // TODO:  add reset button 
+                        // event handler needed
+                    }
+                }, 2000);
+
             }
         }, 1000); 
         // stop timer function held locally within load question 
