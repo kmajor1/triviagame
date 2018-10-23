@@ -26,7 +26,7 @@ window.onload = function ()
     var answersIncorrect = 0; 
 
     // load the timer div into global var 
-    var timerDiv = $(".timer"); 
+    var timerDiv = $("#timerCount"); 
 
     // ready a reset button for later use 
     
@@ -123,7 +123,7 @@ window.onload = function ()
                 }
                 else { // call stop function 
                     qTimerStop();
-                    screenUpdate("loss"); // update screen for wrong answer
+                    screenUpdate("incorrect"); // update screen for wrong answer
                     // wait 2 seconds then load the next question 
                     setTimeout(() => {
                         currentQ++;
@@ -132,7 +132,7 @@ window.onload = function ()
                         loadQuestion();
                         }
                         else {
-                            alert("game over!");
+                            
                             // TODO:  add reset button 
                             // event handler needed
                         }
@@ -155,22 +155,20 @@ window.onload = function ()
     function screenUpdate(t) {
         // if t = win 
         if (t == "correct") {
-            correctAnswerDiv.removeClass("answer");
+            // correctAnswerDiv.removeClass("answer");
             correctAnswerDiv.addClass("answerCorrect"); 
             $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
-            $(".answerIncorrect").removeClass("answer");
             $(".userDash").text("Correct!!");
         }
         else if (t == "incorrect") {
-            correctAnswerDiv.removeClass("answer");
+            // correctAnswerDiv.removeClass("answer");
             correctAnswerDiv.addClass("answerCorrect"); 
             $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
-            $(".answerIncorrect").removeClass("answer");
             $(".userDash").text("Incorrect!");
         }
         else if (t == "clear") {
             // clears the screen and updates classes for fresh question 
-            $(".answerCorrect, .answerIncorrect").addClass("answer");
+            // $(".answerCorrect, .answerIncorrect").addClass("answer");
             $(".answerCorrect").removeClass("answerCorrect");
             $(".answerIncorrect").removeClass("answerIncorrect");
             // clear the p elements containing answers & clear user dashboard
@@ -178,13 +176,13 @@ window.onload = function ()
             $(".userDash").text("");
         }
         else if (t == "newGame") {
-            $(".answerCorrect, .answerIncorrect").addClass("answer");
+            // $(".answerCorrect, .answerIncorrect").addClass("answer");
             $(".answerCorrect").removeClass("answerCorrect");
             $(".answerIncorrect").removeClass("answerIncorrect");
             // clear the p elements containing answers 
             $(".answer p").text("");
             // clear the user dashboard 
-            $(".userDash, .timer, #question").text("");
+            $(".userDash, #timerCount, #question").text("");
             $("#question").text("Play Again?")
 
             // set currentQ to start
