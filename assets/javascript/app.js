@@ -33,10 +33,7 @@ window.onload = function ()
         // load the correct answer 
         var correctAnswer = qAndA[currentQ].c; 
         console.log(correctAnswer);
-        if (usrAnswer == "timeout") {
-            // display times up msg 
-        }
-        else if (usrAnswer == correctAnswer) {
+        if (usrAnswer == correctAnswer) {
             alert("Well done!");
             // TODO: add correctAnswers counter
         }
@@ -55,51 +52,49 @@ window.onload = function ()
 
     var loadQuestion = function () {
         // ensure that answers have correct classes for a fresh question 
-        $(".answerCorrect").addClass("answer");
-        $(".answerIncorrect").addClass("answer");
-        $(".answerCorrect").removeClass("answerCorrect");
-        $(".answerIncorrect").removeClass("answerIncorrect");
-        // clear the text 
-        $(".answer p").text("");
-        // randomly select a place to put the correct answer
+        screenUpdate("clear");
+
         var correctAnswerPos =  Math.floor(Math.random()*3);
         var correctAnswerDiv = $("#"+correctAnswerPos);
+
         // load an object reflecting current question and answers
+
         var qAndAtoLoad = qAndA[currentQ];
         console.log(qAndAtoLoad);
+        
         // Load question value and correct answer value  into DOM 
+        
         $("#question").text(qAndAtoLoad.q);
         correctAnswerDiv.find("p").text(qAndAtoLoad.c);
+        
         // find remaining empty answer paragraphs 
+        
         var emptySlots = $(".answer p:empty");
+        
         // load wrong answers into those places 
+        
         emptySlots.each(function (index, element) {
             // element == this
             $(this).text(qAndAtoLoad.w[index]);
         });
+
         // question now loaded, intiate a timer 
+
         var qTime = 5; 
         timerDiv.text(qTime);
         var qTimer = setInterval(() => {
+
             // if timer has not run out, run again 
             
-            if (qTime >0) {
+            if (qTime >0) { // update timer on screen
                 console.log(qTime);
                 qTime--;
                 timerDiv.text(qTime);
-                // update a div showing the time remaining 
-                
             }
-            // if it has, stop the timer by calling stopping func 
-            else {
-                qTimerStop(); 
-                // highlight the right answer and give a message 
-                correctAnswerDiv.removeClass("answer");
-                correctAnswerDiv.addClass("answerCorrect"); 
-                $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
-                $(".answerIncorrect").removeClass("answer");
-                $(".userDash").text("You Lose, Jerk.");
-                // wait 2 seconds then load the next question and clear the formats 
+            else { // call stop function 
+                qTimerStop();
+                screenUpdate("loss"); // update screen for wrong answer
+                // wait 2 seconds then load the next question 
                 setTimeout(() => {
                     currentQ++;
                     console.log("currentQ:"+" "+currentQ);
@@ -123,12 +118,37 @@ window.onload = function ()
         
 
     } 
- 
-        
-    // TODO: qTimer function (place in container)
-       
-        // when count gets to zero, call checkAnswer, passing   
 
+    function screenUpdate(t) {
+        // if t = win 
+        if (t == "win") {
+
+        }
+        else if (t == "clear") {
+            // clears the screen and updates classes for fresh q 
+            $(".answerCorrect").addClass("answer");
+            $(".answerIncorrect").addClass("answer");
+            $(".answerCorrect").removeClass("answerCorrect");
+            $(".answerIncorrect").removeClass("answerIncorrect");
+            // clear the text 
+            
+            $(".answer p").text("");
+
+            // randomly select a place to put the correct answer
+
+            
+        }
+        else if (t == "loss") {
+            correctAnswerDiv.removeClass("answer");
+            correctAnswerDiv.addClass("answerCorrect"); 
+            $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
+            $(".answerIncorrect").removeClass("answer");
+            $(".userDash").text("You Lose, Jerk.");
+        }
+        else {
+            return 0; 
+        }
+    }
     
     }
 
