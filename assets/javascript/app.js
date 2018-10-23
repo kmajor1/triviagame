@@ -2,79 +2,108 @@
     // TODO: object library of questions and answers 
 window.onload = function ()
 {
-    var qAndA = {
-        1:  {
+    var qAndA = [
+        {
             q: "What is the capital of Ireland?",
             c: "Dublin",
-            w1: "Cork",
-            w2: "Belfast",
-            w3: "Calway"
-        },
-
-        2: {
+            w: ["Cork", "Belfast", "Calway"]
+        },  
+        {
             q: "What do the stripes on the American flag represent?",
             c: "The 13 original colonies", 
-            w1: "Freedom and Liberty",
-            w2: "Nothing Special",
-            w3: "The number of US States"
+            w: ["Freedom and Liberty", "Nothing Special", "The number of US States"]
         },
-
-
-    }
+    ]
 
     // global  variable - will store the current question the user is at 
-    var currentQ = 2; 
+    var currentQ = 1; 
 
-    // checkAnswer object 
 
 
 // TODO: functions 
-    // TODO: checkAnswer (qAnswer, usrAnswer) 
-    // if qAnswer == timeout then 
-        // display times up msg 
-    // else if qAnswer == usrAnswer then 
-        // highlight the correct answer with color 
-        // display some sort of congratulations message
-    // else then 
-        // highlight the incorrect answer selected by the user with color
-        // display a sorry message of some sort 
+    var checkAnswer = function (usrAnswer) {
+        // load the correct answer 
+        var correctAnswer = qAndA[currentQ].c; 
+        console.log(correctAnswer);
+        if (usrAnswer == "timeout") {
+            // display times up msg 
+        }
+        else if (usrAnswer == correctAnswer) {
+            alert("Well done!");
+            // TODO: add correctAnswers counter
+        }
+        else {
+            alert("ok, Homer Simpson");
+            // TODO: add incorrectAnswers counter 
+        }
 
     // start a nextQ timer function
         // clear message 
         // clear highlight on correct answer div 
         // increment currentQ
         // call loadQuestion 
+    }
+    
 
     var loadQuestion = function () {
+        // randomly select a place to put the correct answer
         var correctAnswerPos =  Math.floor(Math.random()*3);
-        console.log (correctAnswerPos);
         var correctAnswerDiv = $("#"+correctAnswerPos);
+        // load an object reflecting current question and answers
         var qAndAtoLoad = qAndA[currentQ];
         console.log(qAndAtoLoad);
+        // Load question value and correct answer value  into DOM 
         $("#question").text(qAndAtoLoad.q);
-        correctAnswerDiv.text(qAndAtoLoad.c);
-    }
-        // call loadQuestionObject(currentQ) 
-        // place that pair in a new object 
-        // take answer from new object, place in "answer" div with ID matching local var
-        // update custom data-qplaced attribute with 'true' 
-        // cycle through remaining divs, placing wrong answers in first matched element 
-        // call qTimer 
+        correctAnswerDiv.find("p").text(qAndAtoLoad.c);
+        // find remaining empty answer paragraphs 
+        var emptySlots = $(".answer p:empty");
+        // load wrong answers into those places 
+        emptySlots.each(function (index, element) {
+            // element == this
+            $(this).text(qAndAtoLoad.w[index]);
+        });
+        // question now loaded, intiate a timer 
+        var qTime = 5; 
+        var qTimer = setInterval(() => {
+            // if timer has not run out, run again 
+            
+            if (qTime >0) {
+                console.log(qTime);
+                qTime--;
+                // update a div showing the time remaining 
+            }
+            // if it has, stop the timer by calling stopping func 
+            else {
+                qTimerStop(); 
+            }
+        }, 1000); 
+        // stop timer function held locally within load question 
+        // TODO: qTimerStop 
+        function qTimerStop() {
+        clearInterval(qTimer);
+        
+        
+
+    } 
+ 
         
     // TODO: qTimer function (place in container)
-        // refer to stopwatch example 
+       
         // when count gets to zero, call checkAnswer, passing   
 
-    // function calls
+    
+    }
 
     loadQuestion(); 
 
     // event handlers 
-    // TODO: onClick event tied to each answer div (or group of them)
+    $(".answers").on("click", ".answer",  function () {
+        checkAnswer($(this).text());
         // TODO: clear qTimer  
-        // TODO: call checkAnswer (currentQ, answerSelected) 
+    })
+        
 
-
+    
 }
         
 
