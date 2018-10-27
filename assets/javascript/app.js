@@ -6,21 +6,22 @@ window.onload = function ()
     var qTimer;
     var qAndA = [
         {
-            q: "What is the capital of Ireland?",
+            q: "What is the capital of Ireland",
             c: "Dublin",
             w: ["Cork", "Belfast", "Calway"]
         },  
         {
             q: "What do the stripes on the American flag represent?",
             c: "The 13 original colonies", 
-            w: ["Freedom and Liberty", "Nothing Special", "The number of US States"]
+            w: ["Freedom and Liberty", "The number of Coca-Colas President Trump drinks a day", "The number of US States"]
         },
         {
-            q: "This show about yuppie New Yorkers ran for 10 seasons in the 90s",
-            c: "What is Friends?",
-            w: ["What is Roseanne?", "What is Married with Children?", "What is Law & Order?"]
+            q: "Which TV show was re-introduced as \"The Conners\" in 2018?",
+            c: "Roseanne",
+            w: ["Friends", "Married with Children", "Big Bang Theory"]
         }
     ]
+    var isClicked = false; 
 
     // global  variable - will store the current question the user is at 
     var currentQ = 0; 
@@ -39,7 +40,6 @@ window.onload = function ()
         console.log(correctAnswer);
         if (usrAnswer == correctAnswer) {
             screenUpdate("correct");
-            // TODO: add correctAnswers counter
             answersCorrect++; 
             // clear the timer 
             clearInterval(qTimer);
@@ -72,6 +72,7 @@ window.onload = function ()
         if (currentQ < qAndA.length) {
             // ensure that answers have correct classes for a fresh question 
             screenUpdate("clear");
+            isClicked = false; 
 
             correctAnswerPos =  Math.floor(Math.random()*3);
             correctAnswerDiv = $("#"+correctAnswerPos);
@@ -122,14 +123,14 @@ window.onload = function ()
                     setTimeout(() => {
                         currentQ++;
                         console.log("currentQ:"+" "+currentQ);
-                        if (currentQ < qAndA.length) {
-                        loadQuestion();
+                        if (currentQ < qAndA.length) { 
+                            loadQuestion();
                         }
                         else {
                             // load newgame 
                             screenUpdate("newGame");
                         }
-                    }, 2000);
+                    }, 4000);
 
                 }
                 }, 1000); 
@@ -149,23 +150,30 @@ window.onload = function ()
         console.log("invoking screenUpdate");
         // if t = win 
         if (t == "correct") {
+            // update the view when a user selects a correct answer 
             console.log("invoking screenupdate-->correct answer")
             correctAnswerDiv.addClass("answerCorrect"); 
             $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
-            
-            
+            $("#timerCount").text("Correct!");
+            $("#timerCount").addClass("userSuccess");
         }
         else if (t == "incorrect") {
+            // update view when a user selects the wrong answer 
             console.log("invoking screenupdate --> incorrect");
             // correctAnswerDiv.removeClass("answer");
             correctAnswerDiv.addClass("answerCorrect"); 
             $(".answer").not(correctAnswerDiv).addClass("answerIncorrect");
             $("#timerCount").text("Sorry, that's incorrect.");
+            $("#timerCount").addClass("userAlert");
         }
         else if (t == "clear") {
+            // clears the view such that new questions can be loaded 
             console.log("invoking screenUpdate --> clear");
+            // clear newGameButton class from question div 
+            $(".questionContainer").removeClass("newGameButton");
             // change count down color back to black 
             $("#timerCount").removeClass("userAlert");
+            $("#timerCount").removeClass("userSuccess");
             // remove unneeded classes (highlights for incorrect/correct answers)
             $(".answerCorrect").removeClass("answerCorrect");
             $(".answerIncorrect").removeClass("answerIncorrect");
@@ -180,8 +188,9 @@ window.onload = function ()
             $(".questionContainer, .answer").removeClass("invisible");
         }
         else if (t == "newGame") {
+            // loads view such that user can start a new game 
             console.log("invoking screenupdate --> newGame");
-            // $(".answerCorrect, .answerIncorrect").addClass("answer");
+            // remove the answer class from the answer divs 
             $(".answerCorrect").removeClass("answerCorrect");
             $(".answerIncorrect").removeClass("answerIncorrect");
             // clear the p elements containing answers 
@@ -189,20 +198,17 @@ window.onload = function ()
             $("#2, #3").addClass("invisible");
             // clear the user dashboard 
             $(".userDash > p, #timerCount, #question").text("");
-            $("#question").text("Play Again?")
+            $("#question").text("Click here to play again!")
+            // remove answer class from the answer options 
+            $(".answer").removeClass("answer");
             // stick the number of correct answers in answer 0 div 
             $("#0 > p").text(answersCorrect+" questions answered correctly."); 
             $("#1 > p").text(answersIncorrect+" questions answered incorrectly.");
 
             // set currentQ to start
             currentQ = 0;
-            // provide a reset button 
-            var resetBtn =  $("<button>", {
-                "class" : "bigBtn", 
-                text: "New Game!"
-            });
-            
-            $(".userDash").append(resetBtn);
+            // add new game class to the questionContainer 
+            $(".questionContainer").addClass("newGameButton");
 
         }
         else {
@@ -237,21 +243,27 @@ window.onload = function ()
     splash("load"); 
 
     // event handlers 
-    $(".answers").on("click", ".answer",  function () {
-        checkAnswer($(this).text());
-        // TODO: clear qTimer  
-    })
-
-    $("body").on("click", ".userDash button", function () {
-        // load question
-        answersCorrect = answersIncorrect = 0; 
-        screenUpdate("clear");
-        loadQuestion();
-    })
+    $(".answers").on("click", ".answer",  function () { 
+        if (isClicked) {
+            return 
+        }
+        else { 
+            isClicked = true; 
+            checkAnswer($(this).text());
+        }
+        
+        }
+    )
 
     $("body").on("click", ".startGame", function () {
         splash("start");
     });
+
+    $("body").on("click", ".newGameButton", function () {
+        answersCorrect = answersIncorrect = 0; // reset global variables 
+        screenUpdate("clear"); // call function to clear screen
+        loadQuestion(); // call function to load new questions 
+    })
 
 
         

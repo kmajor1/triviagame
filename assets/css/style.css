@@ -7,33 +7,36 @@ h1, h2 {
 body  {
     font-family: 'Oswald', sans-serif;
     box-sizing: content-box;
-    background-color: beige;
+    color: white; 
+    background-color: darkslategray;
+    opacity: 1;
 }
 
 .container {
     display: flex;
-    width: 75%; 
+    width: 90%; 
     flex-direction: column;
     align-items: stretch;
     justify-content: space-around;
     margin: 0 auto; 
     padding: 10px; 
-    border: 1px solid black; 
+    background-color: darkslategray;
+ 
 }
 
 button {
     border: 0; 
     text-decoration: none; 
     transition-duration: 500ms; 
-    background-color: darkgoldenrod; 
-    color: white; 
+    background-color: lightyellow; 
+    color: black; 
     border-radius: 12px; 
     border: 1px solid black; 
 }
 
 
 button:hover {
-    background-color: green; 
+    background-color: black; 
     color: white; 
 
 }
@@ -42,12 +45,21 @@ button:hover {
     width: 50%; 
     font-size: 24pt; 
     margin: 10px auto; 
+
 }
 
 .userDash button {
     width: 50%; 
     font-size: 24pt; 
     margin: 10px auto; 
+}
+
+.newGameButton {
+    transition-duration: 500ms; 
+}
+
+.newGameButton:hover {
+    background-color: yellow; 
 }
 
 
@@ -63,15 +75,20 @@ button:hover {
     visibility: hidden;
 }
 
-
-
 .questionContainer {
     text-align: center;
+    margin: 0; 
+}
+
+.questionContainer h1 {
+    margin: 0; 
 }
 
 .timer h2 {
     text-align: center;
     font-size: 50pt; 
+    margin: 0; 
+    padding: 5px; 
     
 }
 
@@ -81,36 +98,43 @@ button:hover {
     width: 100%; 
 }
 
+.answers div {
+    text-align: center; 
+    font-size: 30pt; 
+}
+
 .answer {
     text-align: center;
     font-size: 30pt; 
     margin: 0;
     padding: 2px;
     font-weight: bold; 
+    border: 1px solid lightgray;
+    border-radius: 12px; 
+    margin: 10px auto; 
+    transition-duration: 350ms; 
+    transition-delay: 50ms
 }
 
 .answer p {
     margin: 0; 
     padding: 10px; 
+    transition-duration: 500ms; 
 }
 
-.answer:hover {
+.answer:not(.answerIncorrect):hover {
     background-color: cadetblue;
     opacity: 0.75; 
     color: white; 
 
 }
 
-.answerIncorrect:hover {
-    background-color: beige; 
-    opacity: 0.20; 
-    color: black; 
-}
-
 .answerCorrect {
     background-color: cadetblue; 
     color: white; 
     opacity: 1; 
+    
+    
 }
 
 .answerIncorrect {
@@ -122,6 +146,12 @@ button:hover {
     font-size: 30pt; 
     text-align: center;
 
+}
+
+.userSuccess {
+    color: greenyellow;
+    font-size: 30pt; 
+    text-align: center; 
 }
 
 
