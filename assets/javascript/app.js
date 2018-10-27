@@ -1,25 +1,42 @@
-// data 
-    // TODO: object library of questions and answers 
 window.onload = function ()
 {
     console.log($(".userDash > p"));
     var qTimer;
     var qAndA = [
         {
-            q: "What is the capital of Ireland",
+            q: "What is the capital of Ireland?",
             c: "Dublin",
             w: ["Cork", "Belfast", "Calway"]
         },  
         {
             q: "What do the stripes on the American flag represent?",
-            c: "The 13 original colonies", 
+            c: "The number of original colonies", 
             w: ["Freedom and Liberty", "The number of Coca-Colas President Trump drinks a day", "The number of US States"]
         },
         {
             q: "Which TV show was re-introduced as \"The Conners\" in 2018?",
             c: "Roseanne",
             w: ["Friends", "Married with Children", "Big Bang Theory"]
+        },
+        {
+            q: "Which Canadian province is the largest by area?",
+            c: "Quebec", 
+            w: ["Ontario", "Nunavut", "Alberta"]
+        },
+        {
+            q: "Which of these is a DC Universe character?",
+            c: "Aquaman",
+            w: ["Spiderman", "Starlord", "Taserface"]
+
+        },
+        {
+            q: "Arnold Schwarzenegger DID NOT star in which of these films?", 
+            c: "Demolition Man", 
+            w: ["Twins", "Commando", "True Lies"]
+
         }
+
+
     ]
     var isClicked = false; 
 
@@ -48,7 +65,7 @@ window.onload = function ()
                 // set index to next question before loading question 
                 currentQ++;
                 loadQuestion(); 
-            }, 4000);
+            }, 2500);
         }
         else {
             screenUpdate("incorrect");
@@ -100,7 +117,7 @@ window.onload = function ()
 
             // question now loaded, intiate a timer 
 
-            var qTime = 5; 
+            var qTime = 10; 
             timerDiv.text(qTime);
                 qTimer = setInterval(() => {
 
@@ -223,6 +240,7 @@ window.onload = function ()
             $("<div>").addClass("startGame").appendTo(".container");
             // load a big fat start button into the page
             $("<button>").text("Start Game").appendTo(".startGame");
+            
             // hide question and answer  divs for now, before game started 
             $(".questionContainer, .answers, .timer").addClass("hide");
 
@@ -261,6 +279,9 @@ window.onload = function ()
 
     $("body").on("click", ".newGameButton", function () {
         answersCorrect = answersIncorrect = 0; // reset global variables 
+        // FIXME: Not a great solution, but messed up with my classes so need to do this
+        $("#2, #3").removeClass("invisible");
+        $("#0, #1, #2, #3").addClass("answer");
         screenUpdate("clear"); // call function to clear screen
         loadQuestion(); // call function to load new questions 
     })
